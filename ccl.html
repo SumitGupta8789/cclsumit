@@ -1,0 +1,2757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCL SmartMine</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f6f7;
+    color:#17202a;
+}
+
+header{
+    background:#0b2d4d;
+    color:white;
+    padding:18px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+header button{
+    background:#e74c3c;
+    color:white;
+    border:0;
+    padding:10px 18px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+.container{
+    max-width:1200px;
+    margin:30px auto;
+    padding:15px;
+}
+
+.login-box{
+    max-width:420px;
+    margin:80px auto;
+    background:white;
+    padding:35px;
+    border-radius:15px;
+    box-shadow:0 5px 25px #0002;
+}
+
+.login-box h1{
+    text-align:center;
+    color:#0b2d4d;
+    margin-bottom:25px;
+}
+
+input,select{
+    width:100%;
+    padding:13px;
+    margin:8px 0 15px;
+    border:1px solid #ccc;
+    border-radius:7px;
+}
+
+.btn{
+    width:100%;
+    padding:13px;
+    border:0;
+    border-radius:7px;
+    background:#0b6efd;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#0957c7;
+}
+
+.dashboard{
+    display:none;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(210px,1fr));
+    gap:20px;
+    margin:25px 0;
+}
+
+.card{
+    background:white;
+    padding:22px;
+    border-radius:12px;
+    box-shadow:0 3px 15px #0001;
+}
+
+.card h2{
+    margin-top:10px;
+}
+
+.sos-area{
+    text-align:center;
+    background:white;
+    padding:35px;
+    border-radius:15px;
+    margin-top:25px;
+}
+
+.sos{
+    width:190px;
+    height:190px;
+    border-radius:50%;
+    border:10px solid #f5b7b1;
+    background:#e74c3c;
+    color:white;
+    font-size:30px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 0 25px #e74c3c88;
+}
+
+.sos:active{
+    transform:scale(.95);
+}
+
+.status{
+    margin-top:20px;
+    font-weight:bold;
+}
+
+.success{
+    color:#1e8449;
+}
+
+.danger{
+    color:#c0392b;
+}
+
+.warning{
+    color:#b9770e;
+}
+
+.map{
+    min-height:180px;
+    background:#d5dbdb;
+    border-radius:12px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top:20px;
+    font-size:18px;
+    color:#566573;
+    text-align:center;
+    padding:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    margin-top:20px;
+}
+
+th,td{
+    padding:13px;
+    border-bottom:1px solid #ddd;
+    text-align:left;
+}
+
+th{
+    background:#0b2d4d;
+    color:white;
+}
+
+.alert{
+    padding:15px;
+    background:#fdecea;
+    color:#922b21;
+    border-left:6px solid #e74c3c;
+    margin:15px 0;
+    border-radius:7px;
+}
+
+.section-title{
+    margin-top:30px;
+    color:#0b2d4d;
+}
+
+.small-btn{
+    width:auto;
+    padding:8px 12px;
+    font-size:13px;
+}
+
+.info-box{
+    background:#eef5ff;
+    border-left:5px solid #0b6efd;
+    padding:15px;
+    margin-top:20px;
+    border-radius:7px;
+}
+
+.attendance-box{
+    text-align:center;
+}
+
+@media(max-width:800px){
+    .login-layout{
+        grid-template-columns:1fr;
+    }
+    .mentor-box{
+        min-height:auto;
+        padding:15px;
+    }
+    .mentor-icon{
+        width:48px;
+        height:48px;
+        font-size:24px;
+        margin-bottom:8px;
+    }
+}
+
+@media(max-width:600px){
+
+    header{
+        padding:15px;
+    }
+
+    .logo{
+        font-size:18px;
+    }
+
+    .sos{
+        width:160px;
+        height:160px;
+    }
+
+    table{
+        font-size:12px;
+        display:block;
+        overflow-x:auto;
+    }
+
+    th,td{
+        padding:8px;
+    }
+}
+
+.mentor-box{background:linear-gradient(135deg,#0b2d4d,#0b6efd);color:white;text-align:center;padding:16px 14px;border-radius:12px;margin:-5px 0 22px;box-shadow:0 5px 16px rgba(11,45,77,.20);border:1px solid rgba(255,255,255,.15)}
+.mentor-box .mentor-label{font-size:12px;font-weight:bold;letter-spacing:1.5px;color:#ffd700;margin-bottom:5px}
+.mentor-box .mentor-name{font-size:24px;font-weight:800;letter-spacing:.5px}
+.mentor-box .mentor-subtitle{margin-top:5px;font-size:12px;opacity:.9}
+
+
+/* =====================================================
+   SMARTMINE LOGIN — CCL STYLE
+===================================================== */
+
+body{
+    margin:0;
+    background:#f4f6f7;
+    color:#17202a;
+}
+
+#loginPage{
+    min-height:100vh;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:30px 24px;
+    position:relative;
+    overflow:hidden;
+    background:
+        linear-gradient(rgba(4,34,65,.22),rgba(4,34,65,.38)),
+        url("ccl_login_background.png") center center / cover no-repeat;
+}
+
+#loginPage::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(circle at 80% 12%,rgba(64,150,255,.18),transparent 32%),
+        linear-gradient(180deg,rgba(4,31,60,.10),rgba(4,31,60,.22));
+    pointer-events:none;
+}
+
+.login-brand{
+    position:absolute;
+    top:26px;
+    left:62px;
+    z-index:5;
+    color:#fff;
+    text-shadow:0 2px 8px rgba(0,0,0,.35);
+}
+
+.login-brand .brand-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.login-brand .brand-mark{
+    width:62px;
+    height:62px;
+    border:3px solid rgba(255,255,255,.95);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:27px;
+    font-weight:800;
+    background:rgba(4,42,82,.25);
+}
+
+.login-brand .brand-name{
+    font-size:48px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.login-brand .brand-tagline{
+    margin-top:9px;
+    font-size:17px;
+    font-style:italic;
+    font-weight:600;
+}
+
+.login-top-right{
+    position:absolute;
+    top:38px;
+    right:58px;
+    z-index:5;
+    color:#fff;
+    font-size:17px;
+    font-style:italic;
+    text-shadow:0 2px 8px rgba(0,0,0,.35);
+}
+
+.login-shell{
+    width:min(850px,94vw);
+    min-height:575px;
+    display:grid;
+    grid-template-columns:1.05fr .78fr;
+    position:relative;
+    z-index:4;
+    margin-top:35px;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 24px 70px rgba(0,22,50,.34);
+}
+
+.login-panel{
+    background:rgba(255,255,255,.97);
+    padding:32px 50px 38px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.login-logo{
+    text-align:center;
+    color:#0b3158;
+    margin-bottom:10px;
+}
+
+.login-logo .mini-ccl{
+    font-size:40px;
+    font-weight:900;
+    letter-spacing:-1px;
+}
+
+.login-logo .mini-tagline{
+    font-size:12px;
+    font-weight:700;
+    font-style:italic;
+    margin-top:-2px;
+}
+
+.login-panel h1{
+    text-align:center;
+    color:#0b3158;
+    font-size:32px;
+    margin:14px 0 5px;
+}
+
+.login-subtitle{
+    text-align:center;
+    color:#48617d;
+    font-size:15px;
+    margin-bottom:20px;
+}
+
+.login-divider{
+    width:72px;
+    height:3px;
+    margin:0 auto 20px;
+    background:#146cf5;
+    border-radius:20px;
+}
+
+.login-field{
+    position:relative;
+    margin-bottom:14px;
+}
+
+.login-field .field-icon{
+    position:absolute;
+    left:17px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#284d76;
+    font-size:20px;
+    z-index:2;
+}
+
+.login-field input,
+.login-field select{
+    width:100%;
+    height:54px;
+    margin:0;
+    padding:0 45px 0 52px;
+    border:1px solid #d6dee9;
+    border-radius:11px;
+    background:#fff;
+    color:#28415f;
+    font-size:15px;
+    outline:none;
+    box-shadow:0 2px 9px rgba(28,65,105,.05);
+    transition:.2s ease;
+}
+
+.login-field select{
+    padding-left:52px;
+    appearance:auto;
+}
+
+.login-field input:focus,
+.login-field select:focus{
+    border-color:#2475ee;
+    box-shadow:0 0 0 3px rgba(36,117,238,.12);
+}
+
+.password-toggle{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    border:0;
+    background:transparent;
+    color:#6d8198;
+    cursor:pointer;
+    font-size:18px;
+    padding:5px;
+}
+
+.login-btn{
+    width:100%;
+    height:56px;
+    border:0;
+    border-radius:11px;
+    margin-top:4px;
+    background:linear-gradient(135deg,#1268ed,#0756d6);
+    color:#fff;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(18,104,237,.22);
+    transition:.2s ease;
+}
+
+.login-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 11px 24px rgba(18,104,237,.30);
+}
+
+.login-note{
+    text-align:center;
+    margin-top:13px;
+    color:#74859a;
+    font-size:12px;
+}
+
+.login-mentor{
+    background:
+        linear-gradient(160deg,rgba(13,82,157,.98),rgba(4,43,88,.98));
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:38px 28px;
+    position:relative;
+}
+
+.login-mentor::after{
+    content:"⚒";
+    position:absolute;
+    bottom:38px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:86px;
+    opacity:.12;
+}
+
+.mentor-line{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    color:#b9d9ff;
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:4px;
+    margin-bottom:22px;
+}
+
+.mentor-line::before,
+.mentor-line::after{
+    content:"";
+    width:52px;
+    height:1px;
+    background:#8fc6ff;
+    opacity:.7;
+}
+
+.mentor-avatar{
+    width:96px;
+    height:96px;
+    border:2px solid #80c0ff;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:50px;
+    background:rgba(255,255,255,.06);
+    margin-bottom:22px;
+}
+
+.mentor-name{
+    font-size:30px !important;
+    font-weight:900 !important;
+    letter-spacing:.4px;
+}
+
+.mentor-role{
+    margin-top:10px;
+    font-size:16px;
+    color:#e4f1ff;
+}
+
+.mentor-quote{
+    margin-top:40px;
+    font-size:18px;
+    line-height:1.55;
+    font-style:italic;
+    color:#eef7ff;
+    max-width:250px;
+}
+
+.login-footer{
+    position:absolute;
+    bottom:17px;
+    left:0;
+    right:0;
+    z-index:5;
+    text-align:center;
+    color:#fff;
+    font-size:13px;
+    text-shadow:0 2px 7px rgba(0,0,0,.5);
+}
+
+@media(max-width:800px){
+    .login-shell{
+        grid-template-columns:1fr;
+        width:min(560px,94vw);
+    }
+
+    .login-mentor{
+        min-height:260px;
+    }
+
+    .login-mentor::after{
+        display:none;
+    }
+
+    .login-brand{
+        left:22px;
+        top:18px;
+    }
+
+    .login-brand .brand-name{
+        font-size:34px;
+    }
+
+    .login-brand .brand-mark{
+        width:48px;
+        height:48px;
+        font-size:21px;
+    }
+
+    .login-top-right{
+        display:none;
+    }
+}
+
+@media(max-width:560px){
+    #loginPage{
+        padding:20px 12px;
+    }
+
+    .login-shell{
+        margin-top:65px;
+    }
+
+    .login-panel{
+        padding:28px 22px;
+    }
+
+    .login-brand .brand-tagline{
+        font-size:13px;
+    }
+
+    .login-panel h1{
+        font-size:27px;
+    }
+
+    .login-footer{
+        font-size:11px;
+        padding:0 10px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+    <div class="logo">
+        ⛏️ CCL SMARTMINE
+    </div>
+
+    <button
+        id="logoutBtn"
+        onclick="logout()"
+        style="display:none;">
+        Logout
+    </button>
+
+</header>
+
+
+<!-- =====================================================
+     LOGIN PAGE
+===================================================== -->
+
+<div id="loginPage">
+
+    <div class="login-brand">
+        <div class="brand-row">
+            <div class="brand-mark">⛏</div>
+            <div class="brand-name">CCL</div>
+        </div>
+        <div class="brand-tagline">Fuelling Sustainable Growth</div>
+    </div>
+
+    <div class="login-top-right">
+        Safe Miners &nbsp;|&nbsp; Stronger Tomorrow
+    </div>
+
+    <div class="login-shell">
+
+        <!-- LEFT: LOGIN -->
+        <div class="login-panel">
+
+            <div class="login-logo">
+                <div class="mini-ccl">CCL</div>
+                <div class="mini-tagline">Fuelling Sustainable Growth</div>
+            </div>
+
+            <h1>SmartMine</h1>
+            <div class="login-subtitle">Miner Safety &amp; Monitoring System</div>
+            <div class="login-divider"></div>
+
+            <h2 style="color:#17385f;font-size:25px;margin:0 0 4px;">
+                Login
+            </h2>
+
+            <p style="color:#6b7d91;font-size:14px;margin:0 0 18px;">
+                Enter your credentials to continue
+            </p>
+
+            <div class="login-field">
+                <span class="field-icon">♙</span>
+                <select id="role">
+                    <option value="miner">Miner</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+
+            <div class="login-field">
+                <span class="field-icon">♙</span>
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Username / Miner ID"
+                    autocomplete="username">
+            </div>
+
+            <div class="login-field">
+                <span class="field-icon">♙</span>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    autocomplete="current-password">
+                <button
+                    type="button"
+                    class="password-toggle"
+                    onclick="togglePassword()"
+                    aria-label="Show or hide password">◉</button>
+            </div>
+
+            <button class="login-btn" onclick="login()">
+                Login &nbsp; →
+            </button>
+
+            <div class="login-note">
+                Secure access • CCL SmartMine Safety System
+            </div>
+
+        </div>
+
+        <!-- RIGHT: MENTOR -->
+        <div class="login-mentor">
+
+            <div class="mentor-line">MENTOR</div>
+
+            <div class="mentor-avatar">👤</div>
+
+            <div class="mentor-name">VEENA HEMBROM MAM</div>
+
+            <div class="mentor-role">
+                Guide &nbsp;|&nbsp; Support &nbsp;|&nbsp; Success
+            </div>
+
+            <div class="mentor-quote">
+                “Better Ideas<br>
+                for a Safer Tomorrow”
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="login-footer">
+        Central Coalfields Limited &nbsp;|&nbsp; Ministry of Coal, Govt. of India
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MINER DASHBOARD
+===================================================== -->
+
+<div
+    id="minerDashboard"
+    class="dashboard"
+>
+
+<header>
+
+    <div>
+        👷 Miner Dashboard
+    </div>
+
+</header>
+
+<div class="container">
+
+    <h1>
+        Welcome,
+        <span id="minerName"></span>
+        👷
+    </h1>
+
+
+    <!-- MINER INFORMATION -->
+
+    <div class="cards">
+
+        <div class="card">
+
+            <p>Employee ID</p>
+
+            <h2 id="minerEmployee"></h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <p>Shift</p>
+
+            <h2 id="minerShift"></h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <p>Mine</p>
+
+            <h2 id="minerMine"></h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <p>GPS Status</p>
+
+            <h2 id="locationStatus">
+                Waiting...
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         ATTENDANCE
+    ================================================= -->
+
+    <div class="card attendance-box">
+
+        <h2>
+            🕘 Attendance
+        </h2>
+
+        <p style="margin:15px 0;">
+
+            Mark your attendance using
+            your current GPS location.
+
+        </p>
+
+        <button
+            class="btn"
+            onclick="markAttendance()">
+
+            🕘 MARK ATTENDANCE
+
+        </button>
+
+        <div
+            id="attendanceStatus"
+            class="status">
+
+            Attendance not marked
+
+        </div>
+
+        <div
+            id="attendanceLocation"
+            style="margin-top:15px;">
+
+        </div>
+
+        <button
+            id="openMyLocationBtn"
+            class="btn small-btn"
+            style="display:none;margin:15px auto 0;"
+            onclick="openCurrentLocation()">
+
+            📍 OPEN MY EXACT LOCATION
+
+        </button>
+
+    </div>
+
+
+    <!-- =================================================
+         SOS
+    ================================================= -->
+
+    <div class="sos-area">
+
+        <h2>
+            🚨 Emergency Assistance
+        </h2>
+
+        <p style="margin:15px;">
+
+            In case of emergency,
+            press the SOS button.
+
+        </p>
+
+        <button
+            class="sos"
+            onclick="sendSOS()">
+
+            SOS
+
+        </button>
+
+        <div
+            id="sosStatus"
+            class="status">
+
+            System Ready
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         GPS
+    ================================================= -->
+
+    <div class="map">
+
+        <div>
+
+            📍
+
+            <br><br>
+
+            <b>
+                Your Current GPS Location
+            </b>
+
+            <br><br>
+
+            <span id="gpsDetails">
+                Waiting for GPS...
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     ADMIN DASHBOARD
+===================================================== -->
+
+<div
+    id="adminDashboard"
+    class="dashboard"
+>
+
+<header>
+
+    <div>
+        👨‍💼 Admin Control Panel
+    </div>
+
+</header>
+
+
+<div class="container">
+
+    <h1>
+        CCL Mine Safety Dashboard
+    </h1>
+
+
+    <!-- ALERT -->
+
+    <div id="adminAlert"></div>
+
+
+    <!-- ADMIN CARDS -->
+
+    <div class="cards">
+
+        <div class="card">
+
+            <p>Total Miners</p>
+
+            <h2 id="totalMiners">
+                3
+            </h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <p>Active Miners</p>
+
+            <h2 id="activeMiners">
+                3
+            </h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <p>Emergency</p>
+
+            <h2 id="emergencyCount">
+                0
+            </h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <p>Attendance Today</p>
+
+            <h2 id="attendanceCount">
+                0
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         MINER MONITORING
+    ================================================= -->
+
+    <div class="card">
+
+        <h2>
+            👷 Miner Monitoring
+        </h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Employee ID
+                    </th>
+
+                    <th>
+                        Name
+                    </th>
+
+                    <th>
+                        Shift
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Location
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody
+                id="minerTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- =================================================
+         ATTENDANCE
+    ================================================= -->
+
+    <div
+        class="card"
+        style="margin-top:25px;"
+    >
+
+        <h2>
+            🕘 Attendance Monitoring
+        </h2>
+
+        <table
+            id="attendanceTable">
+
+            <tr>
+
+                <th>
+                    Time
+                </th>
+
+                <th>
+                    Miner
+                </th>
+
+                <th>
+                    Employee ID
+                </th>
+
+                <th>
+                    Location
+                </th>
+
+                <th>
+                    Action
+                </th>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+
+    <!-- =================================================
+         EMERGENCY LOCATION
+    ================================================= -->
+
+    <div
+        class="card"
+        style="margin-top:25px;"
+    >
+
+        <h2>
+            📍 Emergency Location
+        </h2>
+
+        <div
+            class="map"
+            id="adminMap">
+
+            No Emergency Location
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         EMERGENCY HISTORY
+    ================================================= -->
+
+    <div
+        class="card"
+        style="margin-top:25px;"
+    >
+
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+            <h2>
+                🚨 Emergency History
+            </h2>
+            <button
+                class="btn small-btn"
+                style="background:#c0392b;"
+                onclick="clearAllHistory()">
+                🗑️ CLEAR ALL HISTORY
+            </button>
+        </div>
+
+        <table id="historyTable">
+
+            <tr>
+
+                <th>
+                    Time
+                </th>
+
+                <th>
+                    Miner
+                </th>
+
+                <th>
+                    Location
+                </th>
+
+                <th>
+                    Status
+                </th>
+
+                <th>
+                    Action
+                </th>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   MINER DATA
+   Credentials are NOT displayed in HTML.
+===================================================== */
+
+const miners = {
+
+    sumit:{
+        name:"Sumit Kumar Gupta",
+        password:"Sumit@123",
+        employee:"CCL1026",
+        shift:"Morning",
+        mine:"CCL Project Mine"
+    },
+
+    gourav:{
+        name:"Gourav Kumar",
+        password:"Gourav@123",
+        employee:"CCL1027",
+        shift:"Evening",
+        mine:"CCL Project Mine"
+    },
+
+    shivangi:{
+        name:"Shivangi Kumari",
+        password:"Shivangi@123",
+        employee:"CCL1028",
+        shift:"Evening",
+        mine:"CCL Project Mine"
+    }
+
+};
+
+
+/* =====================================================
+   ADMIN DATA
+===================================================== */
+
+const adminAccount = {
+
+    username:"admin",
+
+    password:"admin123"
+
+};
+
+
+/* =====================================================
+   CURRENT USER
+===================================================== */
+
+let currentUser = "";
+
+
+/* =====================================================
+   CURRENT LOCATION
+===================================================== */
+
+let currentLocation = {
+
+    lat:null,
+
+    lng:null,
+
+    accuracy:null
+
+};
+
+
+/* =====================================================
+   LOCAL STORAGE / HISTORY CLEANUP
+===================================================== */
+
+/* Clear old project history only once.
+   New attendance/SOS records are preserved on refresh. */
+if(localStorage.getItem("cclHistoryCleaned") !== "yes"){
+    localStorage.removeItem("cclEmergency");
+    localStorage.removeItem("cclAttendance");
+    localStorage.setItem("cclHistoryCleaned","yes");
+}
+
+let emergencyData =
+    JSON.parse(
+        localStorage.getItem(
+            "cclEmergency"
+        )
+    ) || [];
+
+
+let attendanceData =
+    JSON.parse(
+        localStorage.getItem(
+            "cclAttendance"
+        )
+    ) || [];
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function login(){
+
+    const username =
+        document
+        .getElementById("username")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const password =
+        document
+        .getElementById("password")
+        .value;
+
+
+    const role =
+        document
+        .getElementById("role")
+        .value;
+
+
+    /* MINER */
+
+    if(
+        role === "miner" &&
+        miners[username] &&
+        miners[username].password === password
+    ){
+
+        currentUser = username;
+
+        document
+        .getElementById("loginPage")
+        .style.display="none";
+
+
+        document
+        .getElementById("minerDashboard")
+        .style.display="block";
+
+
+        document
+        .getElementById("logoutBtn")
+        .style.display="block";
+
+
+        loadMinerDashboard();
+
+        getLocation();
+
+        return;
+    }
+
+
+    /* ADMIN */
+
+    if(
+        role === "admin" &&
+        username === adminAccount.username &&
+        password === adminAccount.password
+    ){
+
+        currentUser = "admin";
+
+        document
+        .getElementById("loginPage")
+        .style.display="none";
+
+
+        document
+        .getElementById("adminDashboard")
+        .style.display="block";
+
+
+        document
+        .getElementById("logoutBtn")
+        .style.display="block";
+
+
+        loadAdminData();
+
+        return;
+    }
+
+
+    alert(
+        "❌ Invalid Login Details"
+    );
+
+}
+
+
+/* =====================================================
+   MINER DASHBOARD
+===================================================== */
+
+function loadMinerDashboard(){
+
+    const miner =
+        miners[currentUser];
+
+
+    document
+    .getElementById("minerName")
+    .innerText =
+        miner.name;
+
+
+    document
+    .getElementById("minerEmployee")
+    .innerText =
+        miner.employee;
+
+
+    document
+    .getElementById("minerShift")
+    .innerText =
+        miner.shift;
+
+
+    document
+    .getElementById("minerMine")
+    .innerText =
+        miner.mine;
+
+
+    document
+    .getElementById("sosStatus")
+    .innerText =
+        "System Ready";
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout(){
+
+    location.reload();
+
+}
+
+
+/* =====================================================
+   GPS LOCATION
+===================================================== */
+
+function getLocation(callback){
+
+    if(
+        !navigator.geolocation
+    ){
+
+        document
+        .getElementById(
+            "locationStatus"
+        )
+        .innerHTML =
+            "❌ GPS not supported";
+
+        if(callback)
+            callback(false);
+
+        return;
+    }
+
+
+    document
+    .getElementById(
+        "locationStatus"
+    )
+    .innerHTML =
+        "⏳ Getting GPS...";
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position){
+
+            currentLocation.lat =
+                position.coords.latitude;
+
+
+            currentLocation.lng =
+                position.coords.longitude;
+
+
+            currentLocation.accuracy =
+                position.coords.accuracy;
+
+
+            document
+            .getElementById(
+                "locationStatus"
+            )
+            .innerHTML =
+                "🟢 GPS Active";
+
+
+            document
+            .getElementById(
+                "gpsDetails"
+            )
+            .innerHTML =
+
+                "Latitude: " +
+
+                currentLocation.lat.toFixed(6)
+
+                +
+
+                "<br>Longitude: " +
+
+                currentLocation.lng.toFixed(6)
+
+                +
+
+                "<br>Accuracy: approximately " +
+
+                Math.round(
+                    currentLocation.accuracy
+                )
+
+                +
+
+                " meters";
+
+
+            const button =
+                document
+                .getElementById(
+                    "openMyLocationBtn"
+                );
+
+
+            if(button){
+
+                button.style.display =
+                    "block";
+
+            }
+
+
+            if(callback)
+                callback(true);
+
+        },
+
+
+        function(error){
+
+            let message =
+                "⚠️ GPS permission needed";
+
+
+            if(error.code === 1){
+
+                message =
+                    "⚠️ Location permission denied";
+
+            }
+
+
+            if(error.code === 2){
+
+                message =
+                    "⚠️ Location unavailable";
+
+            }
+
+
+            if(error.code === 3){
+
+                message =
+                    "⚠️ GPS timeout";
+
+            }
+
+
+            document
+            .getElementById(
+                "locationStatus"
+            )
+            .innerHTML =
+                message;
+
+
+            if(callback)
+                callback(false);
+
+        },
+
+
+        {
+
+            enableHighAccuracy:true,
+
+            timeout:15000,
+
+            maximumAge:0
+
+        }
+
+    );
+
+}
+
+
+/* =====================================================
+   OPEN GOOGLE MAP
+===================================================== */
+
+function openMapLocation(
+    lat,
+    lng
+){
+
+    if(
+        lat === null ||
+        lng === null
+    ){
+
+        alert(
+            "Location unavailable"
+        );
+
+        return;
+    }
+
+
+    const url =
+        "https://www.google.com/maps/search/?api=1&query=" +
+        encodeURIComponent(
+            lat + "," + lng
+        );
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* =====================================================
+   OPEN MY LOCATION
+===================================================== */
+
+function openCurrentLocation(){
+
+    if(
+        currentLocation.lat === null ||
+        currentLocation.lng === null
+    ){
+
+        alert(
+            "First get GPS location."
+        );
+
+        return;
+    }
+
+
+    openMapLocation(
+
+        currentLocation.lat,
+
+        currentLocation.lng
+
+    );
+
+}
+
+
+/* =====================================================
+   MARK ATTENDANCE
+===================================================== */
+
+function markAttendance(){
+
+    if(
+        !currentUser ||
+        currentUser === "admin"
+    ){
+
+        alert(
+            "Please login as miner."
+        );
+
+        return;
+    }
+
+
+    const status =
+        document
+        .getElementById(
+            "attendanceStatus"
+        );
+
+
+    status.innerHTML =
+        "⏳ Getting exact GPS location...";
+
+
+    getLocation(
+
+        function(success){
+
+            if(!success){
+
+                status.innerHTML =
+                    "❌ Attendance not marked";
+
+                status.className =
+                    "status danger";
+
+                return;
+            }
+
+
+            const miner =
+                miners[currentUser];
+
+
+            const attendance = {
+
+                id:Date.now(),
+
+                miner:miner.name,
+
+                employee:miner.employee,
+
+                username:currentUser,
+
+                time:new Date()
+                    .toLocaleString(),
+
+                lat:currentLocation.lat,
+
+                lng:currentLocation.lng,
+
+                accuracy:
+                    currentLocation.accuracy,
+
+                status:"PRESENT"
+
+            };
+
+
+            attendanceData.push(
+                attendance
+            );
+
+
+            localStorage.setItem(
+
+                "cclAttendance",
+
+                JSON.stringify(
+                    attendanceData
+                )
+
+            );
+
+
+            status.innerHTML =
+                "✅ Attendance Marked Successfully";
+
+
+            status.className =
+                "status success";
+
+
+            document
+            .getElementById(
+                "attendanceLocation"
+            )
+            .innerHTML =
+
+                "📍 Latitude: " +
+
+                attendance.lat.toFixed(6)
+
+                +
+
+                "<br>Longitude: " +
+
+                attendance.lng.toFixed(6)
+
+                +
+
+                "<br>Accuracy: approximately " +
+
+                Math.round(
+                    attendance.accuracy
+                )
+
+                +
+
+                " meters";
+
+
+            document
+            .getElementById(
+                "openMyLocationBtn"
+            )
+            .style.display =
+                "block";
+
+
+            alert(
+
+                "✅ Attendance Marked!\n\n" +
+
+                "Miner: " +
+
+                miner.name +
+
+                "\nTime: " +
+
+                attendance.time +
+
+                "\nLatitude: " +
+
+                attendance.lat.toFixed(6) +
+
+                "\nLongitude: " +
+
+                attendance.lng.toFixed(6)
+
+            );
+
+        }
+
+    );
+
+}
+
+
+/* =====================================================
+   SEND SOS
+===================================================== */
+
+function sendSOS(){
+
+    if(
+        !confirm(
+            "🚨 Are you sure you want to send an emergency alert?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const miner =
+        miners[currentUser];
+
+
+    /*
+       Get fresh location before sending SOS.
+    */
+
+    getLocation(
+
+        function(success){
+
+            if(!success){
+
+                alert(
+                    "❌ Cannot send SOS without GPS location."
+                );
+
+                return;
+
+            }
+
+
+            const emergency = {
+
+                id:Date.now(),
+
+                miner:miner.name,
+
+                employee:miner.employee,
+
+                username:currentUser,
+
+                shift:miner.shift,
+
+                mine:miner.mine,
+
+                time:new Date()
+                    .toLocaleString(),
+
+                lat:currentLocation.lat,
+
+                lng:currentLocation.lng,
+
+                accuracy:
+                    currentLocation.accuracy,
+
+                status:"ACTIVE"
+
+            };
+
+
+            emergencyData.push(
+                emergency
+            );
+
+
+            localStorage.setItem(
+
+                "cclEmergency",
+
+                JSON.stringify(
+                    emergencyData
+                )
+
+            );
+
+
+            document
+            .getElementById(
+                "sosStatus"
+            )
+            .innerHTML =
+                "🚨 EMERGENCY SENT TO ADMIN";
+
+
+            document
+            .getElementById(
+                "sosStatus"
+            )
+            .className =
+                "status danger";
+
+
+            alert(
+
+                "🚨 EMERGENCY ALERT SENT!\n\n" +
+
+                "Miner: " +
+
+                miner.name +
+
+                "\nEmployee ID: " +
+
+                miner.employee +
+
+                "\nLocation: " +
+
+                currentLocation.lat.toFixed(6) +
+
+                ", " +
+
+                currentLocation.lng.toFixed(6)
+
+            );
+
+
+            playAlarm();
+
+        }
+
+    );
+
+}
+
+
+/* =====================================================
+   ALARM
+===================================================== */
+
+function playAlarm(){
+
+    try{
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+
+        const audioContext =
+            new AudioContext();
+
+
+        const oscillator =
+            audioContext
+            .createOscillator();
+
+
+        const gain =
+            audioContext
+            .createGain();
+
+
+        oscillator.connect(
+            gain
+        );
+
+
+        gain.connect(
+            audioContext.destination
+        );
+
+
+        oscillator.frequency.value =
+            900;
+
+
+        oscillator.start();
+
+
+        setTimeout(
+
+            function(){
+
+                oscillator.stop();
+
+            },
+
+            1500
+
+        );
+
+    }
+
+    catch(error){
+
+        console.log(
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   ADMIN DATA
+===================================================== */
+
+function loadAdminData(){
+
+    attendanceData =
+        JSON.parse(
+            localStorage.getItem(
+                "cclAttendance"
+            )
+        ) || [];
+
+
+    emergencyData =
+        JSON.parse(
+            localStorage.getItem(
+                "cclEmergency"
+            )
+        ) || [];
+
+
+    document
+    .getElementById(
+        "totalMiners"
+    )
+    .innerText =
+        Object.keys(miners).length;
+
+
+    document
+    .getElementById(
+        "activeMiners"
+    )
+    .innerText =
+        Object.keys(miners).length;
+
+
+    const active =
+        emergencyData.filter(
+
+            function(e){
+
+                return e.status === "ACTIVE";
+
+            }
+
+        ).length;
+
+
+    document
+    .getElementById(
+        "emergencyCount"
+    )
+    .innerText =
+        active;
+
+
+    const today =
+        new Date()
+        .toLocaleDateString();
+
+
+    const todayAttendance =
+        attendanceData.filter(
+
+            function(a){
+
+                return a.time
+                    .startsWith(
+                        today
+                    );
+
+            }
+
+        );
+
+
+    document
+    .getElementById(
+        "attendanceCount"
+    )
+    .innerText =
+        todayAttendance.length;
+
+
+    loadMinerTable();
+
+    loadAttendanceTable();
+
+    loadEmergencyData();
+
+}
+
+
+/* =====================================================
+   MINER TABLE
+===================================================== */
+
+function loadMinerTable(){
+
+    const table =
+        document
+        .getElementById(
+            "minerTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    Object.keys(miners)
+    .forEach(
+
+        function(username){
+
+            const miner =
+                miners[username];
+
+
+            const emergency =
+                emergencyData.find(
+
+                    function(e){
+
+                        return (
+                            e.username ===
+                            username &&
+
+                            e.status ===
+                            "ACTIVE"
+                        );
+
+                    }
+
+                );
+
+
+            const status =
+                emergency
+                ? "🔴 EMERGENCY"
+                : "🟢 Safe";
+
+
+            let location =
+                "Not Available";
+
+
+            if(emergency){
+
+                location =
+
+                    emergency.lat
+                    .toFixed(6)
+
+                    +
+
+                    ", "
+
+                    +
+
+                    emergency.lng
+                    .toFixed(6);
+
+            }
+
+
+            const row =
+                table.insertRow();
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${miner.employee}
+                </td>
+
+                <td>
+                    ${miner.name}
+                </td>
+
+                <td>
+                    ${miner.shift}
+                </td>
+
+                <td>
+                    ${status}
+                </td>
+
+                <td>
+                    ${location}
+                </td>
+
+            `;
+
+        }
+
+    );
+
+}
+
+
+/* =====================================================
+   ATTENDANCE TABLE
+===================================================== */
+
+function loadAttendanceTable(){
+
+    const table =
+        document
+        .getElementById(
+            "attendanceTable"
+        );
+
+
+    table.innerHTML = `
+
+        <tr>
+
+            <th>
+                Time
+            </th>
+
+            <th>
+                Miner
+            </th>
+
+            <th>
+                Employee ID
+            </th>
+
+            <th>
+                Location
+            </th>
+
+            <th>
+                Action
+            </th>
+
+        </tr>
+
+    `;
+
+
+    attendanceData
+    .slice()
+    .reverse()
+    .forEach(
+
+        function(a){
+
+            const row =
+                table.insertRow();
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${a.time}
+                </td>
+
+                <td>
+                    ${a.miner}
+                </td>
+
+                <td>
+                    ${a.employee}
+                </td>
+
+                <td>
+
+                    ${a.lat.toFixed(6)},
+                    ${a.lng.toFixed(6)}
+
+                    <br>
+
+                    <small>
+
+                        Accuracy:
+                        approximately
+
+                        ${Math.round(
+                            a.accuracy || 0
+                        )}
+
+                        meters
+
+                    </small>
+
+                </td>
+
+                <td>
+
+                    <button
+                        class="btn small-btn"
+                        onclick="
+                            openMapLocation(
+                                ${a.lat},
+                                ${a.lng}
+                            )
+                        "
+                    >
+
+                        📍 OPEN MAP
+
+                    </button>
+
+                </td>
+
+            `;
+
+        }
+
+    );
+
+}
+
+
+/* =====================================================
+   EMERGENCY DATA
+===================================================== */
+
+function loadEmergencyData(){
+
+    const table =
+        document
+        .getElementById(
+            "historyTable"
+        );
+
+
+    table.innerHTML = `
+
+        <tr>
+
+            <th>
+                Time
+            </th>
+
+            <th>
+                Miner
+            </th>
+
+            <th>
+                Location
+            </th>
+
+            <th>
+                Status
+            </th>
+
+        </tr>
+
+    `;
+
+
+    emergencyData
+    .slice()
+    .reverse()
+    .forEach(
+
+        function(e){
+
+            const row =
+                table.insertRow();
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${e.time}
+                </td>
+
+                <td>
+
+                    ${e.miner}
+
+                    <br>
+
+                    <small>
+                        ${e.employee}
+                    </small>
+
+                </td>
+
+                <td>
+
+                    ${e.lat.toFixed(6)},
+                    ${e.lng.toFixed(6)}
+
+                    <br><br>
+
+                    <button
+                        class="btn small-btn"
+                        onclick="
+                            openMapLocation(
+                                ${e.lat},
+                                ${e.lng}
+                            )
+                        "
+                    >
+
+                        📍 OPEN MAP
+
+                    </button>
+
+                </td>
+
+                <td>
+
+                    ${e.status === "ACTIVE" ? "🚨 ACTIVE" : "🟢 SAFE"}
+
+                    ${e.resolvedTime ? `<br><small>Resolved: ${e.resolvedTime}</small>` : ""}
+
+                </td>
+
+                <td>
+                    ${e.status === "ACTIVE" ? `
+                    <button
+                        class="btn small-btn"
+                        onclick="markEmergencySafe(${e.id})"
+                    >
+                        🟢 MARK SAFE
+                    </button>` : `
+                    <span class="success"><b>✓ Resolved</b></span>`}
+                </td>
+
+            `;
+
+        }
+
+    );
+
+
+    /* LAST EMERGENCY */
+
+    const activeEmergencies = emergencyData.filter(function(e){
+        return e.status === "ACTIVE";
+    });
+
+    if(
+        activeEmergencies.length > 0
+    ){
+
+        const activeEmergencies = emergencyData.filter(function(e){
+            return e.status === "ACTIVE";
+        });
+
+        const last =
+            activeEmergencies[
+                activeEmergencies.length - 1
+            ];
+
+
+        document
+        .getElementById(
+            "adminAlert"
+        )
+        .innerHTML = `
+
+            <div class="alert">
+
+                🚨
+                <b>
+                    EMERGENCY ALERT!
+                </b>
+
+                <br><br>
+
+                <b>Miner:</b>
+                ${last.miner}
+
+                <br>
+
+                <b>Employee 
+                ID:</b>
+                ${last.employee}
+
+                <br>
+
+                <b>Shift:</b>
+                ${last.shift}
+
+                <br>
+
+                <b>Time:</b>
+                ${last.time}
+
+                <br>
+
+                <b>Location:</b>
+
+                ${last.lat.toFixed(6)},
+                ${last.lng.toFixed(6)}
+
+                <br><br>
+
+                <button
+                    class="btn small-btn"
+                    onclick="
+                        openMapLocation(
+                            ${last.lat},
+                            ${last.lng}
+                        )
+                    "
+                >
+
+                    📍 OPEN EXACT LOCATION
+
+                </button>
+
+            </div>
+
+        `;
+
+
+        document
+        .getElementById(
+            "adminMap"
+        )
+        .innerHTML = `
+
+            <div>
+
+                📍
+
+                <br><br>
+
+                <b>
+                    Emergency Location
+                </b>
+
+                <br><br>
+
+                Miner:
+                ${last.miner}
+
+                <br>
+
+                Latitude:
+                ${last.lat.toFixed(6)}
+
+                <br>
+
+                Longitude:
+                ${last.lng.toFixed(6)}
+
+                <br><br>
+
+                <button
+                    class="btn small-btn"
+                    onclick="
+                        openMapLocation(
+                            ${last.lat},
+                            ${last.lng}
+                        )
+                    "
+                >
+
+                    📍 OPEN IN GOOGLE MAPS
+
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+    else{
+
+        document
+        .getElementById(
+            "adminAlert"
+        )
+        .innerHTML = "";
+
+
+        document
+        .getElementById(
+            "adminMap"
+        )
+        .innerHTML =
+            "No Emergency Location";
+
+    }
+
+}
+
+
+/* =====================================================
+   CLEAR ALL HISTORY
+===================================================== */
+
+function clearAllHistory(){
+
+    if(!confirm(
+        "⚠️ Are you sure you want to delete ALL attendance and emergency history?"
+    )){
+        return;
+    }
+
+    emergencyData = [];
+    attendanceData = [];
+
+    localStorage.removeItem("cclEmergency");
+    localStorage.removeItem("cclAttendance");
+
+    loadAdminData();
+
+    alert("✅ All attendance and emergency history has been cleared.");
+}
+
+
+/* =====================================================
+   MARK EMERGENCY AS SAFE
+===================================================== */
+
+function markEmergencySafe(id){
+
+    const emergency = emergencyData.find(function(e){
+        return e.id === id;
+    });
+
+    if(!emergency){
+        alert("Emergency record not found.");
+        return;
+    }
+
+    if(emergency.status === "SAFE"){
+        alert("This emergency is already marked SAFE.");
+        return;
+    }
+
+    if(!confirm("Has the problem been solved? Mark this miner as SAFE?")){
+        return;
+    }
+
+    emergency.status = "SAFE";
+    emergency.resolvedTime = new Date().toLocaleString();
+
+    localStorage.setItem(
+        "cclEmergency",
+        JSON.stringify(emergencyData)
+    );
+
+    loadAdminData();
+
+    alert("✅ Emergency resolved. Miner status is now SAFE.");
+}
+
+
+/* =====================================================
+   AUTO REFRESH ADMIN
+===================================================== */
+
+setInterval(
+
+    function(){
+
+        if(
+            currentUser === "admin"
+        ){
+
+            loadAdminData();
+
+        }
+
+    },
+
+    3000
+
+);
+
+
+function togglePassword(){
+    const field = document.getElementById("password");
+    if(!field) return;
+    field.type = field.type === "password" ? "text" : "password";
+}
+
+</script>
+
+</body>
+</html>
